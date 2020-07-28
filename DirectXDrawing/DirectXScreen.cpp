@@ -47,6 +47,7 @@ BEGIN_MESSAGE_MAP(DirectXScreen, CDialogEx)
 	ON_WM_RBUTTONDOWN()
 	ON_WM_SIZE()
 	ON_WM_LBUTTONDBLCLK()
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 BOOL DirectXScreen::OnInitDialog()
@@ -155,7 +156,11 @@ void DirectXScreen::HandleDrawing(CPoint point)
 				CPoint point1 = _points->GetAt(_points->FindIndex(0));
 				CPoint point2 = _points->GetAt(_points->FindIndex(1));
 
-				_d3dApp->AddCircle(point1, point2, GetOutlineColor());
+				if (DrawFilled())
+					_d3dApp->AddCircle(point1, point2, GetFillColor());
+				else
+					_d3dApp->AddCircleUnfilled(point1, point2, GetOutlineColor());
+
 				_isDrawing = false;
 				ResetPoints();
 			}
@@ -198,6 +203,11 @@ function<void()> DirectXScreen::GetResetPoints()
 	return bind(&DirectXScreen::ResetPoints, this);
 }
 
+function<void()> DirectXScreen::GetDirectXCleanUp()
+{
+	return bind(&D3DApp::CleanUp, _d3dApp);
+}
+
 
 void DirectXScreen::OnSize(UINT nType, int cx, int cy)
 {
@@ -220,4 +230,11 @@ void DirectXScreen::OnLButtonDblClk(UINT nFlags, CPoint point)
 	}
 
 	CDialogEx::OnLButtonDblClk(nFlags, point);
+}
+
+
+void DirectXScreen::OnClose()
+{
+	_d3dApp->CleanUp();
+	CDialogEx::OnClose();
 }

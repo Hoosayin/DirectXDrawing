@@ -26,6 +26,7 @@ public:
 	virtual BOOL OnInitDialog();
 	function<void()> GetDirectXDraw();
 	function<void()> GetResetPoints();
+	function<void()> GetDirectXCleanUp();
 
 private:
 	D3DApp* _d3dApp;
@@ -51,4 +52,5 @@ public:
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+	afx_msg void OnClose();
 };

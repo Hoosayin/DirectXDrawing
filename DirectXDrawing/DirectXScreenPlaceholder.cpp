@@ -60,6 +60,11 @@ function<void()> DirectXScreenPlaceholder::GetResetPoints()
 	return _directXScreen ? _directXScreen->GetResetPoints() : function<void()>();
 }
 
+function<void()> DirectXScreenPlaceholder::GetDirectXCleanUp()
+{
+	return _directXScreen ? _directXScreen->GetDirectXCleanUp() : function<void()>();
+}
+
 void DirectXScreenPlaceholder::SetOnMouseMoved(function<void(CPoint)> onMouseMoved)
 {
 	_directXScreen->OnMouseMoved = onMouseMoved;

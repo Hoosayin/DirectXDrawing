@@ -79,6 +79,7 @@ public:
 	void AddPolygon(CList<CPoint>* points, COLOR color);
 	void AddPolygonUnfilled(CList<CPoint>* points, COLOR color);
 	void AddCircle(CPoint midpoint, CPoint point, COLOR color);
+	void AddCircleUnfilled(CPoint midpoint, CPoint point, COLOR color);
 
 	void UpdateScene();
 	void DrawScene();

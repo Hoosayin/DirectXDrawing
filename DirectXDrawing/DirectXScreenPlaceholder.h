@@ -25,6 +25,7 @@ public:
 	void Resize();
 	function<void()> GetDirectXDraw();
 	function<void()> GetResetPoints();
+	function<void()> GetDirectXCleanUp();
 
 	void SetOnMouseMoved(function<void(CPoint)> onMouseMoved);
 	void SetOnLButtonDowned(function<void(CPoint)> onLButtonDowned);

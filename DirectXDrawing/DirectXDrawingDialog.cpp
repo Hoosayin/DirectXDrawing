@@ -75,6 +75,7 @@ BEGIN_MESSAGE_MAP(DirectXDrawingDialog, CDialogEx)
 	ON_BN_CLICKED(IDC_RADIO_POLYGON, &DirectXDrawingDialog::OnBnClickedRadioPolygon)
 	ON_BN_CLICKED(IDC_RADIO_FILLED, &DirectXDrawingDialog::OnBnClickedRadioFilled)
 	ON_BN_CLICKED(IDC_RADIO_UN_FILLED, &DirectXDrawingDialog::OnBnClickedRadioUnFilled)
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 BOOL DirectXDrawingDialog::OnInitDialog()
@@ -149,6 +150,7 @@ void DirectXDrawingDialog::InitializeDirect3D()
 
 	DrawScene = DirectXRenderArea.GetDirectXDraw();
 	ResetPoints = DirectXRenderArea.GetResetPoints();
+	CleanUp = DirectXRenderArea.GetDirectXCleanUp();
 
 	DirectXRenderArea.SetOnMouseMoved([this](CPoint point) {
 		UpdateData(FALSE);
@@ -373,4 +375,10 @@ void DirectXDrawingDialog::OnBnClickedRadioFilled()
 void DirectXDrawingDialog::OnBnClickedRadioUnFilled()
 {
 	_drawFilled = false;
+}
+
+
+void DirectXDrawingDialog::OnClose()
+{
+	CDialogEx::OnClose();
 }

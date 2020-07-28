@@ -43,6 +43,7 @@ protected:
 	HICON m_hIcon;
 	function<void()> DrawScene;
 	function<void()> ResetPoints;
+	function<void()> CleanUp;
 
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
@@ -76,4 +77,5 @@ public:
 	afx_msg void OnBnClickedRadioPolygon();
 	afx_msg void OnBnClickedRadioFilled();
 	afx_msg void OnBnClickedRadioUnFilled();
+	afx_msg void OnClose();
 };

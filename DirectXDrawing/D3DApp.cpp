@@ -248,11 +248,11 @@ CList<XMVECTOR>* D3DApp::MidpointCircleDraw(FXMVECTOR midpoint, float radius)
 	float y_center = XMVectorGetY(midpoint);
 
 	float x = radius;
-	float y = 0;
+	float y = 0.0f;
 
 	vectors->AddTail(XMVectorSet(x + x_center, y + y_center, 0.0f, 0.0f));
 
-	if (radius > 0)
+	if (radius > 0.0f)
 	{
 		vectors->AddTail(XMVectorSet(x + x_center, -y + y_center, 0.0f, 0.0f));
 		vectors->AddTail(XMVectorSet(y + x_center, x + y_center, 0.0f, 0.0f));
@@ -263,16 +263,16 @@ CList<XMVECTOR>* D3DApp::MidpointCircleDraw(FXMVECTOR midpoint, float radius)
 
 	while (x > y)
 	{
-		y++;
+		y += 0.001f;
  
-		if (P <= 0)
+		if (P <= 0.0f)
 		{
-			P = P + 2 * y + 1;
+			P = P + 2 * y + 0.001f;
 		} 
 		else
 		{
-			x--;
-			P = P + 2 * y - 2 * x + 1;
+			x -= 0.001f;
+			P = P + 2 * y - 2 * x + 0.001f;
 		}
 
 		if (x < y)
@@ -651,6 +651,43 @@ void D3DApp::AddCircle(CPoint midpoint, CPoint point, COLOR color)
 	SetVertexBuffer(shape);
 
 	shape->Topology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
+	_shapes->AddTail(shape);
+}
+
+void D3DApp::AddCircleUnfilled(CPoint midpoint, CPoint point, COLOR color)
+{
+	XMVECTOR midpointVector = UnprojectPoint(midpoint);
+	XMVECTOR vector = UnprojectPoint(point);
+
+	float radius = CalculateRadius(midpointVector, vector);
+	CList<XMVECTOR>* vectors = MidpointCircleDraw(midpointVector, radius);
+
+	int length = vectors->GetCount();
+
+	D3D_SHAPE* shape = new D3D_SHAPE();
+	shape->NumberOfVertices = length;
+
+	shape->Vertices = new VERTEX[length];
+	int count = 0;
+
+	POSITION position = vectors->GetHeadPosition();
+
+	while (position)
+	{
+		XMVECTOR vector = vectors->GetNext(position);
+
+		shape->Vertices[count++] = VERTEX(
+			XMVectorGetX(vector),
+			XMVectorGetY(vector),
+			0.0f, color.Red, color.Green, color.Blue, 1.0f);
+	}
+
+	shape->IndexBuffer = nullptr;
+	shape->IsIndexed = false;
+
+	SetVertexBuffer(shape);
+
+	shape->Topology = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
 	_shapes->AddTail(shape);
 }
 
